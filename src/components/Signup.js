@@ -3,22 +3,32 @@ import { Link, useNavigate } from "react-router-dom";
 import { Form, Alert } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import { useUserAuth } from "../context/UserAuthContext";
+import '../App.css'
 
 const Signup = () => {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [password, setPassword] = useState("");
   const { signUp } = useUserAuth(); 
+  const { profileName } = useUserAuth(); 
+
+  const [name, setName] = useState("");
+
+  const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false); 
 
   let navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     setError("");
+    setSubmitButtonDisabled(true); 
     e.preventDefault(); //prevents page not to be refreshed on submit 
     try {
         await signUp(email, password);
+        setSubmitButtonDisabled(false); 
+        profileName(name); 
         navigate('/');
     } catch (err) {
+        setSubmitButtonDisabled(false); 
         setError(err.message)
     }
   };
@@ -29,6 +39,14 @@ const Signup = () => {
         <h2 className="mb-3">Firebase Auth Signup</h2>
         {error && <Alert variant="danger">{error}</Alert>}
         <Form onSubmit={handleSubmit}>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Control
+              type="text"
+              placeholder="Your Name"
+              onChange={(e) => setName(e.target.value)}
+            />
+          </Form.Group>
+
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Control
               type="email"
@@ -46,7 +64,7 @@ const Signup = () => {
           </Form.Group>
 
           <div className="d-grid gap-2">
-            <Button variant="primary" type="Submit">
+            <Button className="signupButton" variant="primary" type="Submit" disabled={submitButtonDisabled}>
               Sign up
             </Button>
           </div>
