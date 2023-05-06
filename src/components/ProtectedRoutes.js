@@ -1,9 +1,12 @@
 import React from 'react'
+import { Navigate } from 'react-router-dom';
+import { useUserAuth } from '../context/UserAuthContext';
 
-export default function ProtectedRoutes() {
-  return (
-    <div>
-      
-    </div>
-  )
+export default function ProtectedRoutes( {children} ) {
+
+  let { user } = useUserAuth(); 
+  if (!user) {
+    return <Navigate to="/"/>
+  }
+  return children; 
 }

@@ -5,17 +5,29 @@ import GoogleButton from "react-google-button";
 import { Link } from 'react-router-dom';
 import '../App.css'
 
+import { useUserAuth } from '../context/UserAuthContext';
+import { useNavigate } from 'react-router-dom';
 
 
 export default function Login() {
 
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [password, setPassword] = useState("");
+  const { logIn } = useUserAuth(); 
 
-  const handleGoogleSignIn = () => {
-    
-  }
+  let navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    setError("");
+    e.preventDefault(); //prevents page not to be refreshed on submit 
+    try {
+        await logIn(email, password);
+        navigate('/home');
+    } catch (err) {
+        setError(err.message)
+    }
+  };
 
 
   return (
@@ -23,7 +35,7 @@ export default function Login() {
     <div className="p-4 box">
       <h2 className="mb-3">Firebase Auth Login</h2>
       {error && <Alert variant="danger">{error}</Alert>}
-      <Form >
+      <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Control
             type="email"
@@ -51,7 +63,7 @@ export default function Login() {
         <GoogleButton
           className="g-btn"
           type="dark"
-          onClick={handleGoogleSignIn}
+          // onClick={handleGoogleSignIn}
         />
       </div>
     </div>

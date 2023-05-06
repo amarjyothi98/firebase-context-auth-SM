@@ -4,7 +4,9 @@ import Login from './components/Login'
 import Signup from './components/Signup'
 import { Col, Container, Row } from 'react-bootstrap';
 import { UserAuthContextProvider } from './context/UserAuthContext';
+import Home from './components/Home';
 
+import ProtectedRotue from "./components/ProtectedRoutes"
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
           <Routes>
             <Route path='/' element={<Login/>}/>
             <Route path='/signup' element={<Signup/>}/>
+            <Route path='/home'
+            element={<ProtectedRotue><Home/></ProtectedRotue>}/>
           </Routes>
         </UserAuthContextProvider>
         </Col>
