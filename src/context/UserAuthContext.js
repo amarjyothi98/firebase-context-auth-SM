@@ -28,7 +28,12 @@ export function UserAuthContextProvider( {children} ) {
     }
 
     function profileName (name) {
-        return updateProfile(user, {displayName: name}); 
+        console.log(name); 
+        return updateProfile(auth.currentUser, {displayName: name})
+        .then((res) => console.log(res))
+        .catch ((error) => {
+            console.log(error)
+        }); 
     } 
 
     useEffect(() => {

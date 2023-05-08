@@ -1,0 +1,5 @@
+{
+  "projects": {
+    "default": "redux-auth-social-media"
+  }
+}
